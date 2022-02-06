@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슬라이더 박스</title>
+    <script  src="http://code.jquery.com/jquery-latest.js"></script>
+    <style>
+        html,*{
+            padding: 0;
+            list-style: none;
+        }
+        .container{
+            width: 80vw;
+            height: 400px;
+            margin: 0 auto 20px;
+            border: 2px solid #000;
+            overflow: hidden;
+            position: relative;
+        }
+        .btns{
+            display: flex;
+            margin: 0 auto;
+            width: 200px;
+            height: 50px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .btns button{
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .inner{
+            display: inline-flex;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: 1s;
+        }
+
+        .item{
+            width: 80vw;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 보여지는 화면 틀 -->
+    <div class="container">
+        <!-- inner 움직이는 박스 -->
+        <ul class="inner">
+            <!-- 슬라이더 박스안에 들어오는 컨텐츠 -->
+        </ul>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="btns">
+        <button class="prev"><</button>
+        <button class="next">></button>
+    </div>
+    <script>
+        $(function(){
+            let data = ['index0','index1','index2','index3','index4','index5','index6'];
+            
+            data.map((item,index) => {
+                $('.inner').append(`<li class="item item${index}">${item}</li>`);
+            });
+
+            let index = 0;
+            // 버튼
+            // 버튼이 눌렸을 때 이벤트처리 
+            $('button').click(function(){
+                // htn는 버튼 이벤트가 발생했을 때 class 이름으로
+                // 이전 버튼인지 다음 버튼인지 구분을 한다
+                let btn = $(this).attr('class');
+                if(btn == "prev"){
+                    if(!(index == 0)){
+                        prev();
+                    }
+                }else if(btn == "next"){
+                    if(!(index == data.length-1)){
+                        next();
+                    }
+                }
+                console.log(index,' : 인덱스값')
+            });
+
+            // 실제 포지션으로 움직이는 태그
+            let inner = $('.inner');
+
+            // inner 라는 태그를 움직이게 해주는 함수
+            function move(){
+                let w = index * 80;
+                let left = "-" + String(w) + "vw";
+                console.log(left);
+                inner.css({"left" : left});
+            }
+            // next 버튼이 눌렸을 때 실행되는 함수
+            function next(){
+                index = index + 1; 
+                move();
+            }
+            // prev 버튼이 눌렸을 때 실행되는 함수
+            function prev(){
+                index = index - 1; 
+                move();
+            }
+        })
+    </script>
+</body>
+</html>
